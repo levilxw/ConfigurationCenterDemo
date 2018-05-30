@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using SchoolPal.DisConf.Client.Configuration;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace ConfigurationCenterDemo
 {
@@ -45,6 +46,10 @@ namespace ConfigurationCenterDemo
             }, configuration);
 
             services.AddMvc();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "ConfigurationCenterDemo API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +61,12 @@ namespace ConfigurationCenterDemo
             }
 
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
         }
     }
 }
